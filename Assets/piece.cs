@@ -9,10 +9,12 @@ public class piece : MonoBehaviour
     public float speed;
     float realRotation;
 
+
+    public GameManager gm;
     // Use this for initialization
     void Start()
     {
-
+        gm = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -31,9 +33,20 @@ public class piece : MonoBehaviour
 
     void OnMouseDown()
     {
+        int difference = -gm.QuickSweep((int)transform.position.x, (int)transform.position.y);
+
 
         RotatePiece();
 
+
+        difference += gm.QuickSweep((int)transform.position.x, (int)transform.position.y);
+
+
+        gm.puzzle.curValue += difference;
+
+
+        if (gm.puzzle.curValue == gm.puzzle.winValue)
+            gm.Win();
     }
 
     public void RotatePiece()
